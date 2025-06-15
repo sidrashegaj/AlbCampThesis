@@ -1,0 +1,142 @@
+<br>
+<div class="container page-wrapper">
+  <div class="row">
+    <!-- Carousel Section -->
+    <div class="col-md-6 mb-4">
+      <div *ngIf="campground.images && campground.images.length > 0; else noImages">
+        <div id="campgroundCarousel" class="carousel slide" data-bs-ride="carousel">
+          <div class="carousel-inner">
+            <ng-container *ngFor="let image of campground.images; let i = index">
+              <div class="carousel-item" [class.active]="i === 0">
+                <img [src]="image.url" class="d-block w-100 rounded" alt="Campground image" />
+              </div>
+            </ng-container>
+          </div>
+          <button class="carousel-control-prev" type="button" data-bs-target="#campgroundCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#campgroundCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+          </button>
+        </div>
+      </div>
+
+      <ng-template #noImages>
+        <img [src]="randomImageUrl" class="d-block w-100 rounded" alt="Default Campground Image" />
+      </ng-template>
+
+
+      <ng-template #noImages>
+        <img [src]="randomImageUrl" class="d-block w-100 rounded" alt="Default Campground Image" />
+      </ng-template>
+
+
+      <!-- Campground Info Card -->
+      <div class="card mt-4">
+        <div class="card-body">
+          <h5 class="card-title">{{ campground?.name }}</h5>
+          <p class="card-text">{{ campground?.description }}</p>
+        </div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item text-muted">{{ campground?.location }}</li>
+          <li class="list-group-item">Submitted by {{ campground?.author?.username }}</li>
+          <li class="list-group-item price-highlight">${{ campground?.price }}/night</li>
+        </ul>
+        <div class="card-footer d-flex justify-content-between align-items-center flex-wrap">
+          <span class="text-muted">2 days ago</span>
+          <div class="d-flex gap-2 flex-wrap align-items-center">
+            <button *ngIf="authService.isAuthenticated()" class="btn btn-danger btn-sm"
+              (click)="deleteCampground(campground.campgroundId)">
+              Delete
+            </button>
+            <button *ngIf="authService.isAuthenticated()" class="btn btn-warning btn-sm" (click)="handleEditClick()">
+              Edit
+            </button>
+            <button *ngIf="authService.isAuthenticated()"
+              [routerLink]="['/campgrounds', campground.campgroundId, 'book']" class="btn btn-success btn-sm">
+              Book Now
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Map and Reviews Section -->
+    <div class="col-md-6">
+      <div id="map" class="rounded mb-4"></div>
+
+      <div class="reviews-section mt-4">
+        <h3 class="mb-4">Reviews</h3>
+        <div *ngIf="reviews.length > 0; else noReviews">
+          <div class="card mb-3" *ngFor="let review of reviews">
+            <div class="card-body">
+              <p class="card-text">{{ review.text }}</p>
+              <div class="d-flex justify-content-between align-items-center">
+                <small class="text-muted">
+                  <strong>By:</strong> {{ review.user?.username || 'Anonymous' }} on {{ review.timestamp | date: 'MMM d,
+                  y' }}
+                </small>
+                <span>
+                  <strong>Rating:</strong> {{ review.rating }}
+                  <i class="fas fa-star text-warning"></i>
+                </span>
+              </div>
+              <button class="btn btn-danger btn-sm mt-2" (click)="deleteReview(review.reviewId)">
+                Delete
+              </button>
+
+
+
+            </div>
+          </div>
+        </div>
+
+        <ng-template #noReviews>
+          <p>No reviews yet. Be the first to leave one!</p>
+        </ng-template>
+      </div>
+
+      <!-- Leave a Review -->
+      <div *ngIf="authService.isAuthenticated(); else notLoggedIn">
+        <div class="mt-4">
+          <h4 class="mb-3">Leave a Review</h4>
+          <form (ngSubmit)="submitReview()" class="mb-3">
+            <fieldset class="starability-grow">
+              <input type="radio" id="rate1" name="rating" [(ngModel)]="newRating" value="1" />
+              <label for="rate1" title="Terrible"><i class="fas fa-star"></i></label>
+
+              <input type="radio" id="rate2" name="rating" [(ngModel)]="newRating" value="2" />
+              <label for="rate2" title="Not good"><i class="fas fa-star"></i></label>
+
+              <input type="radio" id="rate3" name="rating" [(ngModel)]="newRating" value="3" />
+              <label for="rate3" title="Average"><i class="fas fa-star"></i></label>
+
+              <input type="radio" id="rate4" name="rating" [(ngModel)]="newRating" value="4" />
+              <label for="rate4" title="Very good"><i class="fas fa-star"></i></label>
+
+              <input type="radio" id="rate5" name="rating" [(ngModel)]="newRating" value="5" />
+              <label for="rate5" title="Amazing"><i class="fas fa-star"></i></label>
+            </fieldset>
+
+            <div class="mb-3">
+              <label for="reviewText" class="form-label">Your Review</label>
+              <textarea id="reviewText" class="form-control" [(ngModel)]="newReview.text" name="body" rows="3"
+                required></textarea>
+            </div>
+            <button class="btn btn-success" type="submit">Submit</button>
+          </form>
+        </div>
+      </div>
+
+      <ng-template #notLoggedIn>
+        <div class="alert alert-warning text-center">
+          <p>You need to be logged in to leave a review.</p>
+          <button class="btn btn-primary" (click)="navigateToLogin()">Login</button>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+</div>

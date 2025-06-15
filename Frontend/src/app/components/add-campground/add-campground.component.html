@@ -1,0 +1,126 @@
+<div class="container form-wrapper mt-5">
+  <div class="form-header text-center mb-4">
+    <h1>Add New Campground</h1>
+    <p class="text-muted">Fill out the details below to create a stunning new campground listing.</p>
+  </div>
+
+  <form [formGroup]="campgroundForm" (ngSubmit)="onSubmit()" enctype="multipart/form-data">
+    <div class="mb-4">
+      <label for="name" class="form-label">Campground Title</label>
+      <input
+        type="text"
+        id="name"
+        class="form-control shadow"
+        formControlName="name"
+        placeholder="Enter a captivating title"
+        required
+      />
+      <div *ngIf="campgroundForm.get('name')?.invalid && campgroundForm.get('name')?.touched" class="form-error">
+        Title is required.
+      </div>
+    </div>
+
+    <div class="mb-4">
+      <label for="location" class="form-label">Location</label>
+      <input
+        type="text"
+        id="location"
+        class="form-control shadow"
+        formControlName="location"
+        placeholder="Enter the location (e.g., City, State)"
+        required
+      />
+      <div *ngIf="campgroundForm.get('location')?.invalid && campgroundForm.get('location')?.touched" class="form-error">
+        Location is required.
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6 mb-4">
+        <label for="latitude" class="form-label">Latitude</label>
+        <input
+          type="number"
+          id="latitude"
+          class="form-control shadow"
+          formControlName="latitude"
+          placeholder="41.3275"
+          required
+        />
+        <div *ngIf="campgroundForm.get('latitude')?.invalid && campgroundForm.get('latitude')?.touched" class="form-error">
+          Latitude is required.
+        </div>
+      </div>
+      <div class="col-md-6 mb-4">
+        <label for="longitude" class="form-label">Longitude</label>
+        <input
+          type="number"
+          id="longitude"
+          class="form-control shadow"
+          formControlName="longitude"
+          placeholder="19.8189"
+          required
+        />
+        <div *ngIf="campgroundForm.get('longitude')?.invalid && campgroundForm.get('longitude')?.touched" class="form-error">
+          Longitude is required.
+        </div>
+      </div>
+    </div>
+
+    <div class="mb-4">
+      <label for="price" class="form-label">Price per Night</label>
+      <div class="input-group shadow">
+        <span class="input-group-text">$</span>
+        <input
+          type="number"
+          id="price"
+          class="form-control"
+          formControlName="price"
+          placeholder="Enter price"
+          required
+        />
+      </div>
+      <div *ngIf="campgroundForm.get('price')?.invalid && campgroundForm.get('price')?.touched" class="form-error">
+        Price must be greater than 0.
+      </div>
+    </div>
+
+    <div class="mb-4">
+      <label for="description" class="form-label">Description</label>
+      <textarea
+        id="description"
+        class="form-control shadow"
+        formControlName="description"
+        rows="3"
+        placeholder="Provide a detailed description"
+        required
+      ></textarea>
+      <div *ngIf="campgroundForm.get('description')?.invalid && campgroundForm.get('description')?.touched" class="form-error">
+        Description is required.
+      </div>
+    </div>
+
+    <div class="mb-4">
+      <label for="images" class="form-label">Upload Images</label>
+      <input
+        type="file"
+        id="images"
+        class="form-control shadow"
+        (change)="onFileSelected($event)"
+        multiple
+      />
+    </div>
+
+    <div class="text-center mt-5">
+      <button *ngIf="canAddOrDelete()" class="btn btn-success btn-lg px-5 py-2 shadow" type="submit">
+        <i class="fas fa-plus-circle"></i> Add Campground
+      </button>
+    </div>
+  </form>
+
+  <div class="text-center mt-4">
+    <button class="btn btn-secondary btn-lg px-5 py-2 shadow" [routerLink]="['/campgrounds']">
+      Back to All Campgrounds
+    </button>
+  </div>
+</div>
+<br>

@@ -1,0 +1,32 @@
+<div class="container py-5">
+  <div class="card shadow-lg border-0 rounded-4 p-5 bg-light-subtle text-center">
+    <div class="mb-4">
+      <h2 class="fw-bold text-success mb-2">
+        <i class="bi bi-gear-fill me-2 text-secondary"></i> Admin Dashboard
+      </h2>
+      <p class="mb-0">Welcome, <strong class="text-dark">{{ username }}</strong> 👋</p>
+    </div>
+
+    <div class="row mt-4 justify-content-center gy-3">
+      <div class="col-12 col-md-4">
+        <button class="btn btn-primary w-100 py-3 shadow-sm rounded-3 fw-semibold" (click)="viewUsers()">
+          👥 View Users
+        </button>
+      </div>
+      <div class="col-12 col-md-4">
+        <button class="btn btn-success w-100 py-3 shadow-sm rounded-3 fw-semibold" (click)="manageCampgrounds()">
+          🏕️ Manage Campgrounds
+        </button>
+      </div>
+      <div class="col-12 col-md-4">
+        <button class="btn btn-danger w-100 py-3 shadow-sm rounded-3 fw-semibold" (click)="manageReviews()">
+          📝 Manage Reviews
+        </button>
+      </div>
+      <div class="col-12 col-md-4">
+        <button class="btn btn-warning w-100 py-3 shadow-sm rounded-3 fw-semibold" (click)="viewBookings()">
+          📅 View Bookings
+        </button>
+    </div>
+  </div>
+</div>

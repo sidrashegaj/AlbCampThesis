@@ -1,0 +1,168 @@
+.campground-hero {
+  position: relative;
+  height: 90vh;
+  background: #043927;
+  color: white;
+  display: flex;
+  flex-direction: row; 
+  align-items: center;
+  justify-content: space-around; 
+  padding: 5px; 
+}
+
+.hero-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 50px; 
+  z-index: 10;
+}
+
+.map-container {
+  width: 90%; 
+  max-width: 800px; 
+  border: 2px solid #ffffff; 
+  border-radius: 10px; 
+  overflow: hidden;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.hero-map {
+  width: 100%;
+  height: 400px; 
+}
+
+.hero-circle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 80px; 
+}
+
+.circle-text {
+  font-family: "Cinzel", serif;
+  font-size: 2.5rem; 
+  color: #fff6ef;
+  text-transform: uppercase;
+  width: 200px; 
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  animation: rotate 10s linear infinite;
+  cursor: pointer;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.circle-text:hover {
+  animation-duration: 5s;
+}
+
+.hero-circle .circle-text span {
+  font-size: 1.75rem; 
+  font-weight: bold; 
+}
+
+.campground-page {
+  background: linear-gradient(to bottom, #82a569, #ffffff);
+  padding: 40px 20px;
+}
+
+.campground-card {
+  border: none;
+  border-radius: 15px;
+  overflow: hidden;
+  background-color: #b9dab9;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.campground-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.campground-card img {
+  height: 200px;
+  object-fit: cover;
+  border-bottom: 2px solid #004d40;
+}
+
+.campground-card .card-title {
+  font-size: 1.25rem;
+  color: #004d40;
+  font-weight: bold;
+  flex-grow: 1; 
+
+}
+.campground-card .card-text {
+  font-size: 0.95rem;
+  color: #6c757d;
+  overflow: hidden; 
+  text-overflow: ellipsis; 
+  white-space: nowrap; 
+}
+
+
+.campground-card .btn-custom-primary {
+  background-color: #004d40;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 25px;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.campground-card .btn-custom-primary:hover {
+  background-color: #00695c;
+  transform: scale(1.05);
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .campground-hero {
+    height: auto;
+    padding: 20px 10px;
+  }
+
+  .map-container {
+    width: 100%;
+  }
+
+  .circle-text {
+    font-size: 1.25rem;
+    width: 200px;
+    height: 200px;
+  }
+
+  .campground-card img {
+    height: 150px;
+  }
+  
+}
+.transparent-input {
+  background-color: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #fff;
+  backdrop-filter: blur(6px);
+  transition: 0.3s ease;
+}
+
+.transparent-input::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.transparent-input:focus {
+  outline: none;
+  border-color: #fff;
+  background-color: rgba(255, 255, 255, 0.25);
+}

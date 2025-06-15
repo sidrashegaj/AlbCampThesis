@@ -1,0 +1,41 @@
+<div class="container py-5">
+  <div class="card shadow-lg border-0 rounded-4 mx-auto" style="max-width: 600px;">
+    <div class="card-body p-5 text-center">
+      <h2 class="mb-4 text-success fw-bold">
+        <i class="bi bi-house-heart-fill"></i> Book Your Stay
+      </h2>
+
+      <form #bookingForm="ngForm" (ngSubmit)="submitBooking()" class="text-start">
+        <div class="mb-3">
+          <label for="nights" class="form-label fw-semibold">Number of Nights</label>
+          <input type="number" [(ngModel)]="nights" name="nights" id="nights" min="1"
+            class="form-control form-control-lg border-success" required #nightsField="ngModel" />
+          <div *ngIf="nightsField.invalid && nightsField.touched" class="text-danger small mt-1">
+            Please enter at least 1 night.
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="phoneNumber" class="form-label fw-semibold">Phone Number</label>
+          <input type="tel" [(ngModel)]="phoneNumber" name="phoneNumber" id="phoneNumber"
+            class="form-control form-control-lg border-success" required pattern="^[0-9]{8,15}$"
+            #phoneField="ngModel" />
+          <div *ngIf="phoneField.invalid && phoneField.touched" class="text-danger small mt-1">
+            Phone number must be 8 to 15 digits.
+          </div>
+        </div>
+
+        <div class="d-flex justify-content-between mt-4">
+          <button type="button" class="btn btn-outline-secondary" (click)="goBack()">
+            ← Back to Campground
+          </button>
+
+          <button type="submit" class="btn btn-success px-4" [disabled]="bookingForm.invalid">
+            Confirm Booking
+          </button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div>

@@ -1,0 +1,36 @@
+<div class="container my-5 section-box">
+  <h3 class="text-center section-title">🌲 All Campgrounds</h3>
+  <div class="table-responsive">
+    <table class="table table-hover table-bordered text-center align-middle">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Name</th>
+          <th>Location</th>
+          <th>Price (€)</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let cg of campgrounds; index as i">
+          <td>{{ i + 1 }}</td>
+          <td>{{ cg.name }}</td>
+          <td>{{ cg.location }}</td>
+          <td>{{ cg.price }}</td>
+          <td>
+            <button class="btn btn-sm btn-warning me-2" (click)="editCampground(cg)">
+              ✏️ Edit
+            </button>
+           <button class="btn btn-danger btn-sm" (click)="confirmDelete(cg.campgroundId)">🗑 Delete</button>
+<div *ngIf="campgroundToDelete === cg.campgroundId" class="alert alert-warning mt-2">
+  <p>Are you sure you want to delete this campground?</p>
+  <button class="btn btn-sm btn-danger me-2" (click)="deleteCampground(cg.campgroundId)">Yes</button>
+  <button class="btn btn-sm btn-secondary" (click)="cancelDelete()">No</button>
+</div>
+
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

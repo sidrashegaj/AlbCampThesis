@@ -1,0 +1,49 @@
+.flash-message {
+  position: fixed; 
+  top: 20px;
+  left: 50%; 
+  transform: translateX(-50%); 
+  background-color: #007f68; 
+  color: white;
+  padding: 15px 30px; 
+  margin: 0 auto;
+  text-align: center;
+  border-radius: 8px; 
+  width: 80%; 
+  max-width: 600px; 
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); 
+  font-size: 1rem; 
+  font-weight: bold;
+  z-index: 1000; 
+  animation: fadeInOut 4s ease-in-out; 
+}
+
+@keyframes fadeInOut {
+  0%, 100% {
+      opacity: 0; 
+      transform: translateX(-50%) translateY(-10px); 
+  }
+  10%, 90% {
+      opacity: 1; 
+      transform: translateX(-50%) translateY(0); 
+  }
+}
+
+.flash-message button {
+  background-color: white;
+  color: #17a2b8;
+  font-size: 0.9rem;
+  border: none;
+  padding: 8px 20px;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.flash-message button:hover {
+  background-color: #007f68;
+  color: white;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}

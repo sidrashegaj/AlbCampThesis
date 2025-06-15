@@ -1,0 +1,52 @@
+<div class="campground-hero">
+  <!-- Map -->
+  <div class="map-container">
+    <div id="hero-map" class="hero-map"></div>
+  </div>
+
+  <!-- Circular Text -->
+  <div class="hero-circle">
+    <div id="circle-text" class="circle-text" (click)="scrollToCards()">
+      <span>Nature &#9675; Adventure &#9675; Memories</span>
+    </div>
+  </div>
+</div>
+
+<div id="campground-cards" class="campground-page">
+  <div class="container">
+    <div class="text-center mb-4">
+      <input type="text" class="form-control w-50 mx-auto transparent-input" placeholder="Search campgrounds..." [(ngModel)]="searchQuery"
+        (input)="filterCampgrounds()" />
+    </div>
+
+    <h1 class="text-center mb-5 display-4">Discover Your Next Adventure</h1>
+
+    <!-- Campground Cards -->
+    <div *ngIf="filteredCampgrounds.length > 0; else noResults">
+  <div class="row gy-4">
+      <div class="col-md-6 col-lg-4"*ngFor="let campground of filteredCampgrounds"
+ >
+        <div class="card campground-card">
+          <img [src]="campground.images[0]?.url || getRandomImageUrl()" class="card-img-top" alt="Campground Image" />
+          <div class="card-body text-center">
+            <h5 class="card-title">{{ campground.name }}</h5>
+            <p class="card-text text-muted">{{ campground.description }}</p>
+            <p class="text-secondary">
+              <i class="bi bi-geo-alt"></i> {{ campground.location }}
+            </p>
+            <button class="btn btn-custom-primary" [routerLink]="['/campgrounds', campground.campgroundId]">
+              View Details
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <ng-template #noResults>
+  <div class="text-center mt-5">
+    <h4 class="text-muted">No campgrounds match your search.</h4>
+    <p>But you can be the first to create it!</p>
+    <a class="btn btn-success mt-2" [routerLink]="['/campgrounds/new']">Create New Campground</a>
+  </div>
+</ng-template>
+</div>

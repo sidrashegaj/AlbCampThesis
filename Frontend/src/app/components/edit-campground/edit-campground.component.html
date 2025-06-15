@@ -1,0 +1,92 @@
+<div class="form-wrapper">
+  <div class="row">
+    <h1 class="text-center mb-4">Edit Campground</h1>
+    <div class="col-md-6 offset-md-3">
+      <form (ngSubmit)="onSubmit()" novalidate>
+        <!-- Title -->
+        <div class="mb-4">
+          <label class="form-label" for="name">Title</label>
+          <input [(ngModel)]="campground.name" name="name" class="form-control form-control-lg" type="text" id="name"
+            required />
+        </div>
+
+        <!-- Location -->
+        <div class="mb-4">
+          <label class="form-label" for="location">Location</label>
+          <input [(ngModel)]="campground.location" name="location" class="form-control form-control-lg" type="text"
+            id="location" required />
+        </div>
+
+        <!-- Latitude & Longitude -->
+        <div class="row">
+          <div class="col-md-6 mb-4">
+            <label class="form-label" for="latitude">Latitude</label>
+            <input [(ngModel)]="campground.latitude" name="latitude" class="form-control form-control-lg" type="number"
+              id="latitude" required />
+          </div>
+          <div class="col-md-6 mb-4">
+            <label class="form-label" for="longitude">Longitude</label>
+            <input [(ngModel)]="campground.longitude" name="longitude" class="form-control form-control-lg"
+              type="number" id="longitude" required />
+          </div>
+        </div>
+
+        <!-- Price -->
+        <div class="mb-4">
+          <label class="form-label" for="price">Campground Price</label>
+          <div class="input-group">
+            <span class="input-group-text">$</span>
+            <input [(ngModel)]="campground.price" name="price" type="number" class="form-control" id="price"
+              placeholder="0.00" aria-label="price" required />
+          </div>
+        </div>
+
+        <!-- Description -->
+        <div class="mb-4">
+          <label class="form-label" for="description">Description</label>
+          <textarea [(ngModel)]="campground.description" name="description" class="form-control form-control-lg"
+            id="description" rows="4" required></textarea>
+        </div>
+
+        <!-- Add More Images -->
+        <div class="mb-4">
+          <label class="form-label" for="image">Add More Images</label>
+          <div class="form-file custom-file">
+            <input type="file" class="form-file-input" id="image" (change)="onImageSelected($event)" multiple />
+            <label class="form-file-label" for="image"></label>
+          </div>
+        </div>
+        <!-- Image Preview Section -->
+        <div *ngIf="previewImages.length > 0; else showExistingImages">
+          <label>Preview of Selected Images:</label>
+          <div class="d-flex gap-2 flex-wrap mt-2">
+            <img *ngFor="let img of previewImages" [src]="img" width="100" class="rounded border" />
+          </div>
+        </div>
+
+        <ng-template #showExistingImages>
+          <div *ngIf="(campground.images || []).length > 0">
+            <label>Current Images:</label>
+            <div class="d-flex gap-2 flex-wrap mt-2">
+              <img *ngFor="let img of campground.images || []" [src]="img.url" width="100" class="rounded border" />
+            </div>
+          </div>
+        </ng-template>
+
+
+
+
+        <!-- Submit Button -->
+        <div class="mb-3 text-center">
+          <button class="btn btn-primary btn-lg" type="submit">
+            Update Campground
+          </button>
+        </div>
+      </form>
+
+      <div class="text-center mt-3">
+        <a [routerLink]="['/campgrounds', campground.campgroundId]" class="btn btn-secondary">Back To Campground</a>
+      </div>
+    </div>
+  </div>
+</div>

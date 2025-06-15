@@ -1,0 +1,29 @@
+.section-box {
+  background-color: #d9f5e5 ;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+.section-title {
+  font-weight: 700;
+  font-size: 1.75rem;
+  color: #14532d;
+  margin-bottom: 1.5rem;
+}
+.table thead th {
+  vertical-align: middle;
+  background-color: #1c1c1c;
+  color: #fff;
+}
+.badge-admin {
+  background-color: #198754;
+}
+.badge-user {
+  background-color: #6c757d;
+}
+.btn-icon {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  justify-content: center;
+}

@@ -1,0 +1,52 @@
+<div class="container mt-5">
+    <h2 class="mb-4 text-success fw-bold text-center">📋 All Bookings</h2>
+
+    <div *ngIf="bookings.length === 0" class="alert alert-warning text-center">
+        No bookings found.
+    </div>
+
+    <div class="table-responsive" *ngIf="bookings.length > 0">
+        <table class="table table-bordered table-hover align-middle text-center">
+            <thead class="table-success">
+                <tr>
+                    <th>ID</th>
+                    <th>User</th>
+                    <th>Campground</th>
+                    <th>Nights</th>
+                    <th>Total Price</th>
+                    <th>Status</th>
+                    <th>Booking Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let booking of bookings">
+                    <td>{{ booking.bookingId }}</td>
+                    <td>{{ booking.username  }}</td>
+                    <td>{{ booking.campgroundName }}</td>
+                    <td>{{ booking.nights }}</td>
+                    <td>${{ booking.totalPrice }}</td>
+                    <td>
+                        <span class="badge" [ngClass]="{
+    'bg-info': booking.status === 'Pending',
+    'bg-success': booking.status === 'Paid',
+    'bg-danger': booking.status === 'Cancelled'
+  }">
+                            {{ booking.status }}
+                        </span>
+                    </td>
+
+
+                    <td>{{ booking.bookingDate | date: 'short' }}</td>
+                    <td>
+                        <select class="form-select form-select-sm" (change)="changeStatus(booking.bookingId, $event)">
+                            <option value="Pending" [selected]="booking.status === 'Pending'">Pending</option>
+                            <option value="Paid" [selected]="booking.status === 'Paid'">Paid</option>
+                            <option value="Cancelled" [selected]="booking.status === 'Cancelled'">Cancelled</option>
+                        </select>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

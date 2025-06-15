@@ -1,0 +1,50 @@
+<div class="video-bg-container">
+  <!-- Video Background -->
+  <video autoplay muted loop playsinline preload="auto" class="video-bg">
+    <source src="assets/hiking.mp4" type="video/mp4" />
+    Your browser does not support the video tag.
+  </video>
+  <div class="overlay"></div>
+
+  <!-- Register Form -->
+  <div class="register-section d-flex justify-content-center align-items-center">
+    <div class="card shadow-lg rounded-4" style="max-width: 400px; background-color: rgba(255, 255, 255, 0.95);">
+      <div class="card-body p-4">
+        <h3 class="text-center mb-4 text-dark">Create an Account</h3>
+        <p class="text-center text-muted mb-4">Join AlbCamp and explore the world of campgrounds!</p>
+        <form (ngSubmit)="onSubmit()" #registerForm="ngForm">
+          <div class="mb-3">
+            <label for="username" class="form-label text-dark">Username</label>
+            <input class="form-control rounded-pill" type="text" id="username" name="username" required
+              [(ngModel)]="username" #usernameInput="ngModel" placeholder="Enter your username" />
+            <div *ngIf="usernameInput.invalid && usernameInput.touched" class="text-danger mt-1">
+              Username is required
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="email" class="form-label text-dark">Email</label>
+            <input class="form-control rounded-pill" type="email" id="email" name="email" required [(ngModel)]="email"
+              #emailInput="ngModel" placeholder="Enter your email" />
+            <div *ngIf="emailInput.invalid && emailInput.touched" class="text-danger mt-1">
+              Please enter a valid email address
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="password" class="form-label text-dark">Password</label>
+            <input class="form-control rounded-pill" type="password" id="password" name="password" required
+              [(ngModel)]="password" #passwordInput="ngModel"
+              pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$" placeholder="Enter your password" />
+            <div *ngIf="passwordInput.invalid && passwordInput.touched" class="text-danger mt-1">
+              <div *ngIf="passwordInput.errors?.['required']">Password is required</div>
+              <div *ngIf="passwordInput.errors?.['pattern']">
+                Password must be at least 8 characters, include uppercase, lowercase, and a number
+              </div>
+            </div>
+
+          </div>
+          <button type="submit" class="btn btn-custom-primary w-100 rounded-pill">Register</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

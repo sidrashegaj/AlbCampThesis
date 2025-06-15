@@ -1,0 +1,85 @@
+.navbar {
+  background-color: #042414; 
+  padding: 0.5rem 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.navbar-brand {
+  cursor: pointer;
+  font-size: 1.5rem;
+  font-family: 'Cinzel', serif;
+  color: #ffffff;
+  text-transform: uppercase;
+}
+
+.navbar-brand .text-highlight {
+  color: #18bd6a; 
+}
+
+.navbar-nav {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+}
+
+.nav-link {
+  font-size: 1rem;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 500;
+  color: #ffffff;
+  text-transform: capitalize;
+}
+
+.nav-link:hover {
+  cursor: pointer;
+  color: #12864c; 
+}
+
+.btn-outline {
+  cursor: pointer;
+  color: #18bd6a;
+  border: 1px solid #18bd6a;
+  background-color: transparent;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+  border-radius: 5px;
+  padding: 6px 12px;
+}
+
+.btn-outline:hover {
+  cursor: pointer;
+  color: #212529;
+  background-color: #12864c; 
+  border: 1px solid #12864c;
+}
+
+/* Profile Icon Styling */
+#user-profile i {
+  font-size: 1.2rem;
+}
+
+#user-profile .btn {
+  margin-left: 10px;
+}
+
+/* Navbar Responsiveness */
+@media (max-width: 768px) {
+  .navbar-nav {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .btn-outline {
+    width: 100%; /* Full width buttons on small screens */
+  }
+}

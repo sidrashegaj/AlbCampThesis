@@ -1,0 +1,26 @@
+<div class="container my-5 section-box">
+  <h3 class="text-center section-title">👤 All Registered Users</h3>
+  <div class="table-responsive">
+    <table class="table table-hover table-bordered text-center align-middle">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Username</th>
+          <th>Email</th>
+          <th>Role</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of users; index as i">
+          <td>{{ i + 1 }}</td>
+          <td class="fw-semibold">{{ user.username }}</td>
+          <td class="text-muted">{{ user.email }}</td>
+          <td>
+            <span class="badge badge-admin" *ngIf="user.role === 'admin'">Admin</span>
+            <span class="badge badge-user" *ngIf="!user.role || user.role === 'user'">User</span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

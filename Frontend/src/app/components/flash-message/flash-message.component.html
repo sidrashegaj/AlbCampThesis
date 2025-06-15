@@ -1,0 +1,7 @@
+<div *ngIf="message" class="flash-message" role="alert">
+    <p class="mb-3">{{ message }}</p>
+    <div class="d-flex justify-content-center">
+      <button (click)="dismissMessage()">Close</button>
+    </div>
+  </div>
+  
