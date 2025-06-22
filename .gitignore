@@ -1,21 +1,31 @@
-# Node
-**/node_modules/
+# Ignore .NET build output
+bin/
+obj/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+*.dbmdl
+*.log
+
+# Ignore Visual Studio folders
+.vs/
+*.vsidx
+.vscode/
+
+# Ignore Angular build output
+dist/
+out-tsc/
+node_modules/
 npm-debug.log
 yarn-error.log
 
-# Angular build output
-**/dist/
-**/.angular/cache
-/tmp
-/out-tsc
-/bazel-out
+# Environment & config
+.env
+*.env.local
+*.env.development
+*.env.production
 
-# .NET build artifacts
-**/bin/
-**/obj/
-**/debug/
-*.dll
-*.exe
-*.pdb
-*.cache
-*.log
+# OS files
+.DS_Store
+Thumbs.db

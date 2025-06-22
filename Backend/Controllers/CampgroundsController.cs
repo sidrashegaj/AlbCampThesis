@@ -7,6 +7,7 @@ using BACKEND.Services;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Text.Json;
 
 namespace BACKEND.Controllers
 {
@@ -136,7 +137,6 @@ namespace BACKEND.Controllers
         [Authorize]
         public async Task<IActionResult> UpdateCampground(int id, [FromForm] UpdateCampgroundDto updateDto)
         {
-            // 🛠️ Remove images from model validation so it's not treated as required
             ModelState.Remove("Images");
 
             if (!ModelState.IsValid)
@@ -147,24 +147,18 @@ namespace BACKEND.Controllers
             try
             {
                 var userId = int.Parse(User.FindFirst("UserId").Value);
-
                 var campground = await _context.Campgrounds
                                                .Include(c => c.Images)
                                                .FirstOrDefaultAsync(c => c.CampgroundId == id);
 
                 if (campground == null)
-                {
                     return NotFound("Campground not found.");
-                }
 
                 var userRole = User.FindFirst(System.Security.Claims.ClaimTypes.Role)?.Value;
 
                 if (campground.UserId != userId && userRole != "admin")
-                {
                     return Forbid("You are not authorized to update this campground.");
-                }
 
-                // Update other fields
                 campground.Name = updateDto.Name;
                 campground.Location = updateDto.Location;
                 campground.Description = updateDto.Description;
@@ -172,22 +166,16 @@ namespace BACKEND.Controllers
                 campground.Latitude = updateDto.Latitude;
                 campground.Longitude = updateDto.Longitude;
 
-
-                var existingImagesRaw = Request.Form["existingImages"];
-                List<string> existingImages = new();
-
                 if (updateDto.Images != null && updateDto.Images.Count > 0)
                 {
-                    // Clear all existing images and replace with new ones
+                    // Clear all and upload new images
                     campground.Images.Clear();
 
                     foreach (var image in updateDto.Images)
                     {
                         var uploadResult = await _photoService.UploadImageAsync(image);
                         if (uploadResult.Error != null)
-                        {
                             return BadRequest(new { errors = new { Images = new[] { uploadResult.Error.Message } } });
-                        }
 
                         campground.Images.Add(new Image
                         {
@@ -196,33 +184,14 @@ namespace BACKEND.Controllers
                         });
                     }
                 }
-                else if (updateDto.ExistingImages != null)
+                else if (Request.HasFormContentType && Request.Form.TryGetValue("existingImages", out var rawJson))
                 {
-                    // No new images, but preserve the existing ones
+                    var preservedFilenames = JsonSerializer.Deserialize<List<string>>(rawJson!);
+
                     campground.Images = campground.Images
-                        .Where(img => updateDto.ExistingImages.Contains(img.Filename))
+                        .Where(img => preservedFilenames.Contains(img.Filename))
                         .ToList();
                 }
-
-
-                else if (updateDto.Images != null && updateDto.Images.Count > 0)
-                {
-                    foreach (var image in updateDto.Images)
-                    {
-                        var uploadResult = await _photoService.UploadImageAsync(image);
-                        if (uploadResult.Error != null)
-                        {
-                            return BadRequest(new { errors = new { Images = new[] { uploadResult.Error.Message } } });
-                        }
-
-                        campground.Images.Add(new Image
-                        {
-                            Url = uploadResult.SecureUrl.ToString(),
-                            Filename = uploadResult.PublicId
-                        });
-                    }
-                }
-
 
                 await _context.SaveChangesAsync();
                 return Ok(new { message = "Successfully updated campground" });

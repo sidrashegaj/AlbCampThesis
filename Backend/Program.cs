@@ -38,16 +38,16 @@ builder.Services.AddAuthentication(options =>
         ValidateAudience = true,
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true,
-        ValidIssuer = builder.Configuration["JwtSettings:Issuer"] ?? string.Empty, // Default to empty string if null
-        ValidAudience = builder.Configuration["JwtSettings:Audience"] ?? string.Empty, // Default to empty string if null
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JwtSettings:SecretKey"] ?? string.Empty)) // Default to empty string if null
+        ValidIssuer = builder.Configuration["JwtSettings:Issuer"] ?? string.Empty,
+        ValidAudience = builder.Configuration["JwtSettings:Audience"] ?? string.Empty,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JwtSettings:SecretKey"] ?? string.Empty))
     };
 });
 
 // Register services
 builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("CloudinarySettings"));
 builder.Services.AddScoped<PhotoService>();
-builder.Services.AddHttpClient(); // Keep HttpClient for other potential needs
+builder.Services.AddHttpClient();
 
 // Add CORS policy
 builder.Services.AddCors(options =>
@@ -80,7 +80,6 @@ using (var scope = app.Services.CreateScope())
     }
 }
 
-
 // Configure middleware
 if (app.Environment.IsDevelopment())
 {
@@ -90,7 +89,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseCors("AllowAll");
-app.UseAuthentication(); // Authentication middleware
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
