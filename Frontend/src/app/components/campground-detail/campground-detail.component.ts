@@ -68,17 +68,21 @@ export class CampgroundDetailComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.route.paramMap.subscribe((params) => {
       this.campgroundId = Number(params.get('id'));
-      console.log('Campground ID:', this.campgroundId);
+
+      const storedUser = localStorage.getItem('currentUser');
+      if (storedUser) {
+        const user = JSON.parse(storedUser);
+        this.currentUserId = user.userId;
+        this.isLoggedIn = true;
+      }
 
       if (this.campgroundId) {
         this.loadCampgroundDetails(this.campgroundId);
         this.loadReviews(this.campgroundId);
       }
-      this.isLoggedIn = this.authService.isLoggedIn();
-      this.currentUserId = this.authService.getUserId();
-      console.log('Current User ID:', this.currentUserId);
     });
   }
+
 
   canEdit(): boolean {
     const isOwner = this.currentUserId === this.campground.author?.userId;
@@ -96,55 +100,48 @@ export class CampgroundDetailComponent implements OnInit, OnDestroy {
   }
 
   submitReview(): void {
-    if (!this.authService.isLoggedIn()) {
-      this.flashMessageService.showMessage('Please log in to leave a review.', 5000);
-      this.router.navigate(['/login']);
-      return;
-    }
-
-    const reviewToSubmit: Review = {
-      reviewId: 0,
-      text: this.newReview.text,
-      timestamp: new Date(),
-      userId: this.authService.getUserId(),
-      user: { userId: this.authService.getUserId(), username: this.authService.getUsername() || '' },
-      campgroundId: this.campgroundId,
-      rating: this.newRating,
-    };
-
-    console.log('Submitting Review:', reviewToSubmit);
-
-    this.reviewService.addReview(this.campgroundId, reviewToSubmit).subscribe({
-      next: (review) => {
-        console.log('Review successfully posted:', review);
-
-        const normalizedReview: Review = {
-          ...review,
-          userId: this.authService.getUserId(),
-          user: {
-            userId: this.authService.getUserId(),
-            username: this.authService.getUsername() || 'You'
-          }
-        };
-
-
-        this.reviews.push(normalizedReview);
-
-        this.newReview.text = '';
-        this.newRating = 0;
-        this.flashMessageService.showMessage('Review added successfully!', 5000);
-      },
-      error: (err) => {
-        console.error('Error submitting review:', err);
-        this.flashMessageService.showMessage(
-          err.status === 401
-            ? 'You must be logged in to submit a review.'
-            : 'Failed to submit review. Please try again later.',
-          5000
-        );
-      },
-    });
+  if (!this.authService.isLoggedIn()) {
+    this.flashMessageService.showMessage('Please log in to leave a review.', 5000);
+    this.router.navigate(['/login']);
+    return;
   }
+
+  const reviewToSubmit: Review = {
+    reviewId: 0,
+    text: this.newReview.text,
+    timestamp: new Date(),
+    userId: this.authService.getUserId(),
+    user: {
+      userId: this.authService.getUserId(),
+      username: this.authService.getUsername() || 'You'
+    },
+    campgroundId: this.campgroundId,
+    rating: this.newRating,
+  };
+
+  this.reviewService.addReview(this.campgroundId, reviewToSubmit).subscribe({
+    next: () => {
+      this.flashMessageService.showMessage('Review added successfully!', 5000);
+
+      // ✅ Clear form
+      this.newReview.text = '';
+      this.newRating = 0;
+
+      // ✅ Reload all reviews (ensures user + data is consistent)
+      this.loadReviews(this.campgroundId);
+    },
+    error: (err) => {
+      console.error('Error submitting review:', err);
+      this.flashMessageService.showMessage(
+        err.status === 401
+          ? 'You must be logged in to submit a review.'
+          : 'Failed to submit review. Please try again later.',
+        5000
+      );
+    },
+  });
+}
+
 
   loadCampgroundDetails(id: number): void {
     this.campgroundService.getCampground(id).subscribe({
@@ -157,10 +154,7 @@ export class CampgroundDetailComponent implements OnInit, OnDestroy {
           }) || [],
         };
 
-this.reviews = [...(this.campground.reviews || [])].map((r) => ({
-  ...r,
-  user: r.user || { userId: 0, username: 'Anonymous' }, // vendos një placeholder derisa të vijë review i plotë
-}));
+      
         setTimeout(() => {
           const carouselElement = document.querySelector('#campgroundCarousel');
           if (carouselElement && (window as any).bootstrap?.Carousel) {
@@ -180,23 +174,27 @@ this.reviews = [...(this.campground.reviews || [])].map((r) => ({
 
 
   loadReviews(campgroundId: number): void {
-    this.reviewService.getReviewsForCampground(campgroundId).subscribe({
-      next: (reviews: any) => {
-        if (reviews && Array.isArray(reviews)) {
-          this.reviews = reviews;
-        } else if (reviews?.$values) {
-          this.reviews = reviews.$values;
-        } else {
-          this.reviews = [];
-        }
-        console.log('Processed Reviews:', this.reviews);
-      },
-      error: (err) => {
-        console.error('Error fetching reviews:', err);
-        this.reviews = [];
-      },
-    });
-  }
+  this.reviewService.getReviewsForCampground(campgroundId).subscribe({
+    next: (reviews: any) => {
+      const rawReviews = Array.isArray(reviews) ? reviews : reviews?.$values || [];
+
+      this.reviews = rawReviews.map((review: Review) => {
+        const user = review.user ?? {
+          userId: review.userId,
+          username: 'Anonymous'
+        };
+
+        return { ...review, user };
+      });
+    },
+    error: (err) => {
+      console.error('Error fetching reviews:', err);
+      this.reviews = [];
+    },
+  });
+}
+
+
   handleEditClick(): void {
     const isOwner = this.currentUserId === this.campground.author?.userId;
     const isAdmin = this.authService.getUserRole() === 'admin';
@@ -283,6 +281,9 @@ this.reviews = [...(this.campground.reviews || [])].map((r) => ({
       },
     });
   }
+  goBackToCampgrounds(): void {
+  this.router.navigate(['/campgrounds']);
+}
 
   ngOnDestroy(): void {
     if (this.map) {

@@ -23,11 +23,16 @@ export class ReviewService {
     });
   }
   
-  getReviewsForCampground(campgroundId: number): Observable<Review[]> {
-    return this.http.get<Review[]>(`${this.apiUrl}/campground/${campgroundId}`, {
-      headers: this.getAuthHeaders(),
-    });
-  }
+ getReviewsForCampground(campgroundId: number): Observable<Review[]> {
+  const token = this.authService.getToken();
+
+  const options = token
+    ? { headers: new HttpHeaders({ Authorization: `Bearer ${token}` }) }
+    : {}; // ✅ No headers at all for guests
+
+  return this.http.get<Review[]>(`${this.apiUrl}/campground/${campgroundId}`, options);
+}
+
 
   addReview(campgroundId: number, review: Review): Observable<Review> {
     return this.http.post<Review>(`${this.apiUrl}/campground/${campgroundId}`, review, {

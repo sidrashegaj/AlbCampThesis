@@ -4,6 +4,7 @@
 }
 
 .badge {
+  color: black;
   font-size: 0.85rem;
   padding: 0.4em 0.6em;
   border-radius: 8px;

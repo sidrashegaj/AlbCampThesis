@@ -18,31 +18,32 @@ namespace BACKEND.Controllers
             _context = context;
         }
 
-        // GET: api/reviews/campground/{campgroundId}
         [HttpGet("campground/{campgroundId}")]
-        public async Task<ActionResult<IEnumerable<Review>>> GetReviewsForCampground(int campgroundId)
+        public async Task<IActionResult> GetReviewsForCampground(int campgroundId)
         {
             var reviews = await _context.Reviews
                 .Where(r => r.CampgroundId == campgroundId)
-                .Include(r => r.User) 
-                .Select(r => new
-                {
-                    r.ReviewId,
-                    r.Text,
-                    r.Timestamp,
-                    r.Rating,
-                    UserId = r.UserId, 
-                    Username = r.User.Username 
-                })
+                .Include(r => r.User)
+                .AsNoTracking() // ← recommended for read-only data
                 .ToListAsync();
 
-            if (reviews == null || !reviews.Any())
+            var response = reviews.Select(r => new
             {
-                return NotFound("No reviews found for this campground.");
-            }
+                r.ReviewId,
+                r.Text,
+                r.Timestamp,
+                r.Rating,
+                r.UserId,
+                user = new
+                {
+                    userId = r.User?.UserId ?? r.UserId,
+                    username = r.User?.Username ?? "Anonymous"
+                }
+            });
 
-            return Ok(reviews);
+            return Ok(response);
         }
+
 
         // POST: api/reviews/campground/{campgroundId}
         [HttpPost("campground/{campgroundId}")]
