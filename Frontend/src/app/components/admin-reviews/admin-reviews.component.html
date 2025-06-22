@@ -1,5 +1,6 @@
 <div class="container my-5 section-box">
   <h3 class="text-center section-title">📝 All Reviews</h3>
+
   <div class="table-responsive">
     <table class="table table-hover table-bordered align-middle text-center">
       <thead>
@@ -20,19 +21,28 @@
           <td class="text-warning fw-bold">{{ r.rating }}</td>
           <td class="text-start">{{ r.text }}</td>
           <td>
-            <button class="btn btn-danger btn-sm" (click)="setPendingDelete(r.reviewId)">
-              Delete
-            </button>
-
-            <div *ngIf="pendingDeleteId === r.reviewId" class="alert alert-warning mt-2">
-              <p>Are you sure you want to delete this review?</p>
-              <button class="btn btn-sm btn-outline-danger me-2" (click)="confirmDelete(r.reviewId)">Yes</button>
-              <button class="btn btn-sm btn-outline-secondary" (click)="cancelDelete()">No</button>
+            <div class="action-buttons">
+              <button class="btn btn-danger btn-sm" (click)="setPendingDelete(r.reviewId)">
+                🗑 Delete
+              </button>
             </div>
 
+            <div *ngIf="pendingDeleteId === r.reviewId" class="alert alert-warning mt-2">
+              <p class="mb-2">Are you sure you want to delete this review?</p>
+              <div class="d-flex gap-2">
+                <button class="btn btn-sm btn-outline-danger" (click)="confirmDelete(r.reviewId)">Yes</button>
+                <button class="btn btn-sm btn-outline-secondary" (click)="cancelDelete()">No</button>
+              </div>
+            </div>
           </td>
         </tr>
       </tbody>
     </table>
+  </div>
+
+  <div class="d-flex justify-content-start mb-4">
+    <button class="btn btn-outline-dark rounded-pill px-4 py-2 shadow-sm" (click)="goToAdminDashboard()">
+      ⬅ Back to Admin Dashboard
+    </button>
   </div>
 </div>

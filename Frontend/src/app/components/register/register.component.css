@@ -66,8 +66,62 @@
   }
   
   @media (max-width: 768px) {
-    .card {
-      max-width: 90%;
-    }
+  .register-section {
+    width: 100%;
+    padding: 20px;
   }
-  
+
+  .card {
+    max-width: 90% !important;
+    padding: 1.5rem;
+  }
+
+  .card-body {
+    padding: 1.5rem !important;
+  }
+
+  .btn-custom-primary {
+    font-size: 1rem;
+    padding: 10px 16px;
+  }
+
+  .form-control {
+    font-size: 0.95rem;
+    padding: 10px 16px;
+  }
+
+  .form-label {
+    font-size: 0.95rem;
+  }
+
+  h3 {
+    font-size: 1.5rem;
+  }
+
+  p {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .card {
+    max-width: 95% !important;
+  }
+
+  .btn-custom-primary {
+    padding: 8px 14px;
+  }
+
+  .form-control {
+    font-size: 0.9rem;
+  }
+
+  h3 {
+    font-size: 1.3rem;
+  }
+
+  .form-label,
+  p {
+    font-size: 0.85rem;
+  }
+}

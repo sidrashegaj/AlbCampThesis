@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FlashMessageService } from '../../services/flash-message.service';
 import { AuthService } from '../../services/auth.service';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
 
 
 @Component({
@@ -48,7 +49,7 @@ export class BookingComponent {
     phoneNumber: this.phoneNumber
   };
 
-  this.http.post('http://localhost:5259/api/booking', booking).subscribe({
+  this.http.post(`${environment.apiUrl}/booking`, booking).subscribe({
     next: () => {
       this.flashMessageService.showMessage('Booking successful! 🎉', 4000);
       this.router.navigate(['/campgrounds', this.campgroundId]); 

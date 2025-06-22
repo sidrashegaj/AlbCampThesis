@@ -16,6 +16,8 @@ export class RegisterComponent {
   email: string = '';
   password: string = '';
   error: string | null = null;
+    passwordPattern = '^(?=.*[A-Z])(?=.*\\d)[A-Za-z\\d]{8,}$';
+
 
   constructor(private authService: AuthService, private router: Router, private flashMessageService: FlashMessageService) { }
 

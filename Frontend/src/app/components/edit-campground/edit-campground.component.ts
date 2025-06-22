@@ -75,24 +75,24 @@ previewImages: string[] = [];
   }
 }
 
+// edit-campground.component.ts
 onSubmit(): void {
   const formData = new FormData();
   formData.append('name', this.campground.name);
   formData.append('location', this.campground.location);
-  formData.append('price', this.campground.price.toString());
+  formData.append('price', String(this.campground.price));
   formData.append('description', this.campground.description);
-  formData.append('latitude', this.campground.latitude.toString());
-  formData.append('longitude', this.campground.longitude.toString());
+  formData.append('latitude', String(this.campground.latitude));
+  formData.append('longitude', String(this.campground.longitude));
 
   if (this.selectedImages.length > 0) {
-    for (const file of this.selectedImages) {
-      formData.append('images', file);
+    for (const image of this.selectedImages) {
+      formData.append('images', image); // match backend param name!
     }
-    } else {
-    const existingFilenames = this.campground.images.map((img) => img.filename);
-    formData.append('existingImages', JSON.stringify(existingFilenames));
+  } else if (this.campground.images.length > 0) {
+    const existing = this.campground.images.map(img => img.filename);
+    formData.append('existingImages', JSON.stringify(existing)); // backend expects this
   }
-
 
   this.campgroundService.updateCampground(this.campgroundId, formData).subscribe({
     next: () => {
@@ -100,18 +100,13 @@ onSubmit(): void {
       this.router.navigate(['/campgrounds', this.campgroundId]);
     },
     error: (err: HttpErrorResponse) => {
-      console.error('Error updating campground:', err);
-
-      if (err.status === 400 && err.error && err.error.errors) {
-        const errorMessages = Object.keys(err.error.errors)
-          .map((key) => err.error.errors[key][0])
-          .join('\n');
-
-        this.flashMessageService.showMessage(errorMessages, 5000);
-      } else {
-        this.flashMessageService.showMessage('An unexpected error occurred. Please try again.', 5000);
-      }
+      const msg =
+        err.status === 400 && err.error?.errors
+          ? Object.values(err.error.errors).flat().join('\n')
+          : 'An unexpected error occurred.';
+      this.flashMessageService.showMessage(msg, 5000);
     },
   });
 }
+
 }

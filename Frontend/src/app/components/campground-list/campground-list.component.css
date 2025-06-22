@@ -166,3 +166,68 @@
   border-color: #fff;
   background-color: rgba(255, 255, 255, 0.25);
 }
+@media (max-width: 768px) {
+  .campground-hero {
+    flex-direction: column;
+    text-align: center;
+    gap: 20px;
+  }
+
+  .map-container {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+
+  .hero-map {
+    height: 300px;
+  }
+
+  .hero-circle {
+    margin-bottom: 30px;
+  }
+
+  .circle-text {
+    width: 150px;
+    height: 150px;
+    font-size: 1rem;
+  }
+
+  .hero-circle .circle-text span {
+    font-size: 1.2rem;
+  }
+
+  .campground-page h1 {
+    font-size: 1.8rem;
+    padding: 0 10px;
+  }
+
+  .transparent-input {
+    width: 90% !important;
+  }
+
+  .campground-card {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+
+  .campground-card img {
+    height: 140px;
+  }
+
+  .campground-card .card-title {
+    font-size: 1.1rem;
+  }
+
+  .campground-card .card-text {
+    white-space: normal;
+  }
+
+  .campground-card .btn-custom-primary {
+    font-size: 0.9rem;
+    padding: 8px 16px;
+  }
+
+  .text-center.mb-4 input {
+    width: 100% !important;
+  }
+}

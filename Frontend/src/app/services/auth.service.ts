@@ -4,14 +4,19 @@ import { Observable, BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { isPlatformBrowser } from '@angular/common';
 import { jwtDecode } from 'jwt-decode';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:5259/api/auth';
+  private apiUrl = `${environment.apiUrl}/auth`;
+
   private currentUserSubject: BehaviorSubject<any>;
   public currentUser: Observable<any>;
+
+  private usernameSubject = new BehaviorSubject<string | null>(null);
+  public username$ = this.usernameSubject.asObservable();
 
   constructor(
     private http: HttpClient,
@@ -21,10 +26,14 @@ export class AuthService {
       ? localStorage.getItem('currentUser')
       : null;
 
-    this.currentUserSubject = new BehaviorSubject<any>(
-      storedUser ? JSON.parse(storedUser) : null
-    );
+    const parsedUser = storedUser ? JSON.parse(storedUser) : null;
+
+    this.currentUserSubject = new BehaviorSubject<any>(parsedUser);
     this.currentUser = this.currentUserSubject.asObservable();
+
+    if (parsedUser?.username) {
+      this.usernameSubject.next(parsedUser.username);
+    }
   }
 
   public get currentUserValue() {
@@ -48,6 +57,7 @@ export class AuthService {
 
             localStorage.setItem('currentUser', JSON.stringify(user));
             this.currentUserSubject.next(user);
+            this.usernameSubject.next(user.username);
 
             return user;
           } catch (error) {
@@ -59,7 +69,6 @@ export class AuthService {
       })
     );
   }
-
 
   register(username: string, email: string, password: string): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/register`, { username, email, password }).pipe(
@@ -77,6 +86,7 @@ export class AuthService {
 
             localStorage.setItem('currentUser', JSON.stringify(user));
             this.currentUserSubject.next(user);
+            this.usernameSubject.next(user.username);
 
             return user;
           } catch (error) {
@@ -89,14 +99,13 @@ export class AuthService {
     );
   }
 
-
   logout(): void {
     if (isPlatformBrowser(this.platformId)) {
       localStorage.removeItem('currentUser');
       this.currentUserSubject.next(null);
+      this.usernameSubject.next(null);
     }
   }
-
 
   isAuthenticated(): boolean {
     const token = this.getToken();
@@ -118,12 +127,10 @@ export class AuthService {
     return false;
   }
 
-
   getToken(): string | null {
     const currentUser = this.currentUserValue;
     return currentUser ? currentUser.token : null;
   }
-
 
   isLoggedIn(): boolean {
     return !!localStorage.getItem('currentUser');
@@ -134,26 +141,26 @@ export class AuthService {
     const user = storedUser ? JSON.parse(storedUser) : null;
 
     if (user) {
-      console.log('Decoded User:', user); // Debug log
       return user.userId;
     }
 
-    console.warn('No user found in localStorage');
     return 0;
   }
 
-
   getUsername(): string | null {
-    const currentUser = this.currentUserValue;
-    return currentUser ? currentUser.username : null;
+    return this.usernameSubject.value;
   }
+
   getUserRole(): string | null {
     const currentUser = this.currentUserValue;
     return currentUser ? currentUser.role : null;
   }
+
   isAdmin(): boolean {
     return this.getUserRole() === 'admin';
   }
 
-
+  public setUsername(username: string | null) {
+    this.usernameSubject.next(username);
+  }
 }

@@ -4,26 +4,94 @@
   padding: 2rem;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
 }
+
 .section-title {
   font-weight: 700;
   font-size: 1.75rem;
   color: #14532d;
   margin-bottom: 1.5rem;
 }
+
 .table thead th {
   vertical-align: middle;
   background-color: #1c1c1c;
   color: #fff;
 }
-.badge-admin {
-  background-color: #198754;
+
+.btn-outline-dark:hover {
+  background-color: #799679;
+  color: white;
+  transition: all 0.2s ease;
 }
-.badge-user {
-  background-color: #6c757d;
-}
-.btn-icon {
+@media (max-width: 992px) {
+  .table thead {
+    display: none;
+  }
+/* Better spacing between Edit/Delete buttons */
+.action-buttons {
   display: flex;
-  align-items: center;
-  gap: 6px;
-  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+/* Make sure small buttons are compact */
+.btn-sm {
+  padding: 0.25rem 0.6rem;
+  font-size: 0.85rem;
+  line-height: 1.2;
+}
+
+  .table tbody tr {
+    display: block;
+    margin-bottom: 1.5rem;
+    border: 1px solid #dee2e6;
+    border-radius: 10px;
+    padding: 1rem;
+    background-color: #fff;
+  }
+
+  .table tbody td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+    border: none;
+    border-bottom: 1px solid #ccc;
+    font-size: 0.95rem;
+  }
+
+  .table tbody td:last-child {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+    border-bottom: none;
+  }
+
+  .table tbody td::before {
+    content: attr(data-label);
+    font-weight: bold;
+    color: #14532d;
+    min-width: 120px;
+    display: inline-block;
+  }
+
+  /* Force button width full on small screens */
+  .btn-sm {
+    width: 100%;
+  }
+
+  .alert {
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+  }
+
+  .alert button {
+    width: 48%;
+    margin-right: 4%;
+    margin-bottom: 0.4rem;
+  }
+
+  .alert button:last-child {
+    margin-right: 0;
+  }
 }

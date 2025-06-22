@@ -15,6 +15,10 @@ import { AdminCampgroundsComponent } from './components/admin-campgrounds/admin-
 import { AdminReviewsComponent } from './components/admin-reviews/admin-reviews.component';
 import { BookingComponent } from './components/booking/booking.component';
 import { AdminBookingsComponent } from './components/admin-bookings/admin-bookings.component';
+import { AboutComponent } from './pages/about/about.component';
+import { ContactComponent } from './pages/contact/contact.component';
+import { PrivacyPolicyComponent } from './pages/privacy-policy/privacy-policy.component';
+import { TermsComponent } from './pages/terms/terms.component';
 
 export const routes: Routes = [
   { path: '', component: IndexComponent, pathMatch: 'full' },
@@ -30,6 +34,11 @@ export const routes: Routes = [
   { path: 'admin/reviews', component: AdminReviewsComponent, canActivate: [adminGuard] },
   { path: 'campgrounds/:id/book', component: BookingComponent },
   { path: 'admin/bookings', component: AdminBookingsComponent, canActivate: [adminGuard] },
+   { path: 'about', component: AboutComponent },
+  { path: 'contact', component: ContactComponent },
+  { path: 'privacy-policy', component: PrivacyPolicyComponent },
+  { path: 'terms', component: TermsComponent },
+  { path: 'campgrounds', component: CampgroundListComponent },
   { path: '**', redirectTo: '/campgrounds' },
 ];
 

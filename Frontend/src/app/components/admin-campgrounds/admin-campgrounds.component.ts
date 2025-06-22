@@ -43,6 +43,9 @@ campgroundToDelete: number | null = null;
 confirmDelete(id: number): void {
   this.campgroundToDelete = id;
 }
+goToAdminDashboard(): void {
+  this.router.navigate(['/admin-dashboard']);
+}
 
  deleteCampground(id: number): void {
   this.campgroundService.deleteCampground(id.toString()).subscribe({

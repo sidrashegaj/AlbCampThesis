@@ -3,18 +3,21 @@ import { CommonModule } from '@angular/common';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AuthService } from '../../services/auth.service';
 import { FlashMessageService } from '../../services/flash-message.service';
+import { environment } from '../../../environments/environment';
+import { Router } from '@angular/router';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-admin-reviews',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: './admin-reviews.component.html',
 })
 export class AdminReviewsComponent implements OnInit {
   reviews: any[] = [];
 pendingDeleteId: number | null = null;
 
-  constructor(private http: HttpClient, private authService: AuthService, private flashMessageService: FlashMessageService ) {}
+  constructor(private http: HttpClient, private authService: AuthService, private flashMessageService: FlashMessageService, private router: Router ) {}
 
   ngOnInit(): void {
     const token = this.authService.getToken();
@@ -22,7 +25,7 @@ pendingDeleteId: number | null = null;
       ? new HttpHeaders({ Authorization: `Bearer ${token}` })
       : undefined;
 
-    this.http.get<any[]>('http://localhost:5259/api/reviews/all', { headers }).subscribe({
+    this.http.get<any[]>(`${environment.apiUrl}/reviews/all`, { headers }).subscribe({
       next: (data) => {
         if ('$values' in data) {
           this.reviews = data['$values'] as any[];
@@ -50,7 +53,7 @@ confirmDelete(id: number): void {
 
   const headers = new HttpHeaders({ Authorization: `Bearer ${token}` });
 
-  this.http.delete(`http://localhost:5259/api/reviews/${id}`, { headers }).subscribe({
+  this.http.delete(`${environment.apiUrl}/reviews/${id}`, { headers }).subscribe({
     next: () => {
       this.reviews = this.reviews.filter(r => r.reviewId !== id);
       this.flashMessageService.showMessage('Review deleted successfully!', 3000);
@@ -66,6 +69,10 @@ confirmDelete(id: number): void {
     }
   });
 }
+goToAdminDashboard(): void {
+  this.router.navigate(['/admin-dashboard']);
+}
+
  deleteReview(id: number): void {
   const token = this.authService.getToken();
 
@@ -80,7 +87,7 @@ confirmDelete(id: number): void {
 
   const headers = new HttpHeaders({ Authorization: `Bearer ${token}` });
 
-  this.http.delete(`http://localhost:5259/api/reviews/${id}`, { headers }).subscribe({
+  this.http.delete(`${environment.apiUrl}/reviews/${id}`, { headers }).subscribe({
     next: () => {
       this.reviews = this.reviews.filter(r => r.reviewId !== id);
       this.flashMessageService.showMessage('Review deleted successfully!', 3000);

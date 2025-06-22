@@ -157,8 +157,10 @@ export class CampgroundDetailComponent implements OnInit, OnDestroy {
           }) || [],
         };
 
-        this.reviews = [...(this.campground.reviews || [])];
-
+this.reviews = [...(this.campground.reviews || [])].map((r) => ({
+  ...r,
+  user: r.user || { userId: 0, username: 'Anonymous' }, // vendos një placeholder derisa të vijë review i plotë
+}));
         setTimeout(() => {
           const carouselElement = document.querySelector('#campgroundCarousel');
           if (carouselElement && (window as any).bootstrap?.Carousel) {

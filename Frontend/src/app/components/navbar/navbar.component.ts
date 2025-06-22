@@ -21,15 +21,16 @@ export class NavbarComponent implements OnInit {
     public authService: AuthService
   ) {}
 
-  ngOnInit(): void {
-    this.flashMessageService.currentMessage.subscribe((message) => {
-      this.flashMessage = message;
-    });
+ ngOnInit(): void {
+  this.flashMessageService.currentMessage.subscribe((message) => {
+    this.flashMessage = message;
+  });
 
-    if (this.authService.isAuthenticated()) {
-      this.username = this.authService.getUsername();
-    }
-  }
+  this.authService.username$.subscribe((name) => {
+    this.username = name;
+  });
+}
+
 
   onNewCampgroundClick() {
     if (this.authService.isAuthenticated()) {
@@ -40,6 +41,14 @@ export class NavbarComponent implements OnInit {
       }
     }
   }
+closeNavbar() {
+  const navbarToggler = document.querySelector('.navbar-toggler') as HTMLElement;
+  const navbarCollapse = document.querySelector('.navbar-collapse');
+
+  if (navbarToggler && navbarCollapse?.classList.contains('show')) {
+    navbarToggler.click(); // Closes the mobile navbar
+  }
+}
 
   onLogout(): void {
     this.authService.logout();

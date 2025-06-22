@@ -4,12 +4,13 @@ import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Campground } from '../models/campground.model';
 import { AuthService } from './auth.service';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CampgroundService {
-  private readonly apiUrl = 'http://localhost:5259/api/Campgrounds';
+  private readonly apiUrl = `${environment.apiUrl}/campgrounds`;
 
   constructor(private http: HttpClient, private authService: AuthService) { }
 

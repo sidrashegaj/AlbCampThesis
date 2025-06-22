@@ -4,26 +4,71 @@
   padding: 2rem;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
 }
+
 .section-title {
   font-weight: 700;
   font-size: 1.75rem;
   color: #14532d;
   margin-bottom: 1.5rem;
 }
+
 .table thead th {
   vertical-align: middle;
   background-color: #1c1c1c;
   color: #fff;
 }
-.badge-admin {
-  background-color: #198754;
-}
-.badge-user {
-  background-color: #6c757d;
-}
-.btn-icon {
+
+.action-buttons {
   display: flex;
-  align-items: center;
-  gap: 6px;
+  flex-wrap: wrap;
+  gap: 0.5rem;
   justify-content: center;
+}
+
+.alert button {
+  min-width: 60px;
+}
+
+.btn-sm {
+  font-size: 0.85rem;
+  padding: 0.35rem 0.6rem;
+}
+
+.btn-outline-dark:hover {
+  background-color: #799679;
+  color: white;
+  transition: all 0.2s ease;
+}
+
+/* Optional: improve responsiveness on small screens */
+@media (max-width: 768px) {
+  .table thead {
+    display: none;
+  }
+
+  .table tbody tr {
+    display: block;
+    margin-bottom: 1.5rem;
+    border: 1px solid #dee2e6;
+    border-radius: 10px;
+    padding: 1rem;
+    background-color: #f8f9fa;
+  }
+
+  .table tbody td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+    border: none;
+    border-bottom: 1px solid #ccc;
+  }
+
+  .table tbody td:last-child {
+    border-bottom: none;
+  }
+
+  .action-buttons {
+    justify-content: flex-end;
+  }
 }

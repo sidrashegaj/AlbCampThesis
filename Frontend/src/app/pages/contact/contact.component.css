@@ -1,0 +1,34 @@
+.page-wrapper {
+  background: linear-gradient(to right, #d0e5db, #a3ccba);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+}
+
+.page-card {
+  background-color: white;
+  border-radius: 1.5rem;
+  transition: all 0.3s ease;
+  border: none;
+}
+
+.page-card:hover {
+  transform: scale(1.01);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.page-title {
+  font-weight: 700;
+  font-size: 2rem;
+  color: #042414;
+}
+
+.highlight {
+  color: #12864c;
+}
+
+.lead {
+  font-size: 1.15rem;
+  font-weight: 500;
+  color: #495057;
+}
