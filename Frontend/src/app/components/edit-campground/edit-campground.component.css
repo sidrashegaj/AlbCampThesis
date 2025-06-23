@@ -17,7 +17,6 @@ body {
     box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.3);
   }
   
-  /* Header */
   .form-header h1 {
     font-family: "Cinzel", serif;
     font-size: 2.5rem;
@@ -29,14 +28,12 @@ body {
     font-size: 1.1rem;
   }
   
-  /* Form Labels */
   .form-label {
     font-size: 1rem;
     font-weight: bold;
     color: #d6efef;
   }
   
-  /* Form Controls */
   .form-control {
     border-radius: 8px;
     border: none;
@@ -51,7 +48,6 @@ body {
     box-shadow: 0px 0px 8px rgba(40, 167, 69, 0.5); 
   }
   
-  /* Input Group */
   .input-group-text {
     background: #28a745;
     color: white;
@@ -59,7 +55,6 @@ body {
     border: none;
   }
   
-  /* Buttons */
   .btn-primary {
     background: #28a745;
     border: none;
@@ -128,7 +123,7 @@ body {
   .btn {
     font-size: 1rem;
     padding: 10px 16px;
-    width: 100%; /* Buttons full-width on small screens */
+    width: 100%; 
     margin-bottom: 10px;
   }
 

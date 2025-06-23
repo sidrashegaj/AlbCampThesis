@@ -6,6 +6,8 @@ import { CampgroundService } from '../../services/campground.service';
 import { Campground } from '../../models/campground.model';
 import { FlashMessageService } from '../../services/flash-message.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { MapboxService } from '../../services/mapbox.service';
+import mapboxgl from 'mapbox-gl';
 
 @Component({
   selector: 'app-edit-campground',
@@ -42,7 +44,9 @@ previewImages: string[] = [];
     private route: ActivatedRoute,
     private campgroundService: CampgroundService,
     private router: Router,
-    private flashMessageService: FlashMessageService
+    private flashMessageService: FlashMessageService,
+      private mapboxService: MapboxService
+
   ) {}
 
   ngOnInit(): void {
@@ -50,15 +54,19 @@ previewImages: string[] = [];
     this.loadCampgroundDetails();
   }
 
+ 
   loadCampgroundDetails(): void {
     this.campgroundService.getCampground(this.campgroundId).subscribe((campground) => {
-      this.campground = campground;
-  
-      if (!Array.isArray(this.campground.images)) {
-        this.campground.images = [];
-      }
-  
-      this.deleteImages = this.campground.images.map((img) => img.filename);
+    this.campground = campground;
+
+if (!Array.isArray(this.campground.images)) {
+  this.campground.images = [];
+}
+
+this.deleteImages = this.campground.images.map((img) => img.filename);
+
+setTimeout(() => this.initializeMap(), 0);
+
     });
   }
   
@@ -74,8 +82,24 @@ previewImages: string[] = [];
     reader.readAsDataURL(file);
   }
 }
+initializeMap(): void {
+  const map = this.mapboxService.initializeMap('map', [this.campground.longitude, this.campground.latitude], 7);
 
-// edit-campground.component.ts
+  const marker = new mapboxgl.Marker()
+    .setLngLat([this.campground.longitude, this.campground.latitude])
+    .addTo(map);
+
+  map.on('click', (e) => {
+    const { lng, lat } = e.lngLat;
+
+    this.campground.latitude = lat;
+    this.campground.longitude = lng;
+
+    marker.setLngLat([lng, lat]);
+  });
+}
+
+
 onSubmit(): void {
   const formData = new FormData();
   formData.append('name', this.campground.name);
@@ -87,11 +111,11 @@ onSubmit(): void {
 
   if (this.selectedImages.length > 0) {
     for (const image of this.selectedImages) {
-      formData.append('images', image); // match backend param name!
+      formData.append('images', image); 
     }
   } else if (this.campground.images.length > 0) {
     const existing = this.campground.images.map(img => img.filename);
-    formData.append('existingImages', JSON.stringify(existing)); // backend expects this
+    formData.append('existingImages', JSON.stringify(existing)); 
   }
 
   this.campgroundService.updateCampground(this.campgroundId, formData).subscribe({

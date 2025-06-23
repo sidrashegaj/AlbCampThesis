@@ -37,13 +37,11 @@ changeStatus(id: number, event: Event) {
   const target = event.target as HTMLSelectElement;
   const newStatus = target.value;
 
-  // Update local UI immediately
   const booking = this.bookings.find(b => b.bookingId === id);
   if (booking) {
     booking.status = newStatus;
   }
 
-  // Send updated status to backend
   this.http.put(`${environment.apiUrl}/booking/${id}/status`, { status: newStatus }, {
     headers: { 'Content-Type': 'application/json' }
   }).subscribe({

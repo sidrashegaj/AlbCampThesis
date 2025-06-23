@@ -6,6 +6,8 @@ import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { FlashMessageService } from '../../services/flash-message.service';
 import { AuthService } from '../../services/auth.service';
 import { Campground } from '../../models/campground.model';
+import * as mapboxgl from 'mapbox-gl';
+import { MapboxService } from '../../services/mapbox.service';
 
 @Component({
   selector: 'app-add-campground',
@@ -21,6 +23,7 @@ export class AddCampgroundComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
+    private mapboxService: MapboxService,
     private campgroundService: CampgroundService,
     private router: Router,
     private authService: AuthService,
@@ -40,9 +43,27 @@ export class AddCampgroundComponent implements OnInit {
 
   ngOnInit(): void {
     if (isPlatformBrowser(this.platformId)) {
-      console.log('Component initialized in the browser');
-      console.log('AuthService Current User:', this.authService.currentUserValue);
+      const map = this.mapboxService.initializeMap('map', [19.8189, 41.3275], 6);
+
+      let marker: mapboxgl.Marker;
+
+      map.on('click', (e) => {
+        const { lng, lat } = e.lngLat;
+
+        this.campgroundForm.patchValue({
+          latitude: lat,
+          longitude: lng,
+        });
+
+        if (marker) marker.remove();
+
+        marker = new mapboxgl.Marker()
+          .setLngLat([lng, lat])
+          .addTo(map);
+      });
     }
+
+
   }
 
   canAddOrDelete(): boolean {
@@ -65,23 +86,23 @@ export class AddCampgroundComponent implements OnInit {
     formData.append('longitude', this.campgroundForm.value.longitude.toString());
     formData.append('price', this.campgroundForm.value.price.toString());
     formData.append('description', this.campgroundForm.value.description);
- 
+
     this.selectedFiles.forEach((file) => {
-       formData.append('images', file, file.name);
+      formData.append('images', file, file.name);
     });
- 
+
     this.campgroundService.addCampground(formData).subscribe({
-       next: (res) => {
-          this.flashMessageService.showMessage('Campground added successfully!', 5000);
-          this.newCampgroundAdded.emit(res);
-          this.router.navigate([`/campgrounds/${res.campgroundId}`]);
-       },
-       error: (err) => {
-          console.error('Error adding campground', err);
-          this.flashMessageService.showMessage('Failed to add campground!', 5000);
-       },
+      next: (res) => {
+        this.flashMessageService.showMessage('Campground added successfully!', 5000);
+        this.newCampgroundAdded.emit(res);
+        this.router.navigate([`/campgrounds/${res.campgroundId}`]);
+      },
+      error: (err) => {
+        console.error('Error adding campground', err);
+        this.flashMessageService.showMessage('Failed to add campground!', 5000);
+      },
     });
- }
- 
-  
+  }
+
+
 }

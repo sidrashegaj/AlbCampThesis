@@ -38,7 +38,6 @@ input.form-control {
   color: #000;
 }
 
-/* 🔁 Responsive design for smaller screens */
 @media (max-width: 576px) {
   .card-body h2 {
     font-size: 1.5rem;

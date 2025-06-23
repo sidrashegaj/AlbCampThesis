@@ -133,7 +133,7 @@
 }
 
   .navbar-collapse {
-  background-color: #042414; /* Match your navbar */
+  background-color: #042414; 
   padding: 1rem;
   border-radius: 0 0 10px 10px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);

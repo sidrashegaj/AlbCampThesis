@@ -123,11 +123,9 @@ export class CampgroundDetailComponent implements OnInit, OnDestroy {
     next: () => {
       this.flashMessageService.showMessage('Review added successfully!', 5000);
 
-      // ✅ Clear form
       this.newReview.text = '';
       this.newRating = 0;
 
-      // ✅ Reload all reviews (ensures user + data is consistent)
       this.loadReviews(this.campgroundId);
     },
     error: (err) => {

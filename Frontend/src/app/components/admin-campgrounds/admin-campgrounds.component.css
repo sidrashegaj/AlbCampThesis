@@ -27,14 +27,12 @@
   .table thead {
     display: none;
   }
-/* Better spacing between Edit/Delete buttons */
 .action-buttons {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
 }
 
-/* Make sure small buttons are compact */
 .btn-sm {
   padding: 0.25rem 0.6rem;
   font-size: 0.85rem;
@@ -75,7 +73,6 @@
     display: inline-block;
   }
 
-  /* Force button width full on small screens */
   .btn-sm {
     width: 100%;
   }

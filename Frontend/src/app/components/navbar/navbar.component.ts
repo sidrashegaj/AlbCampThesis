@@ -46,7 +46,7 @@ closeNavbar() {
   const navbarCollapse = document.querySelector('.navbar-collapse');
 
   if (navbarToggler && navbarCollapse?.classList.contains('show')) {
-    navbarToggler.click(); // Closes the mobile navbar
+    navbarToggler.click();
   }
 }
 
